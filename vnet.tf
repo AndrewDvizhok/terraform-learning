@@ -10,8 +10,8 @@ variable "space" {
 resource "azurerm_virtual_network" "default" {
   name           = var.vnet_name
   location       = var.location
-  resource_group = var.rgn
-  subnet_space   = var.space
+  resource_group_name = var.rgn
+  address_space   = var.space
 }
 
 output "vnet_id" {
