@@ -7,7 +7,7 @@ variable "space" {
   default = ["10.0.0.0/16"]
 }
 
-resource "azurerm_virtual_netwrok" "default" {
+resource "azurerm_virtual_network" "default" {
   name           = var.vnet_name
   location       = var.location
   resource_group = var.rgn
@@ -15,5 +15,5 @@ resource "azurerm_virtual_netwrok" "default" {
 }
 
 output "vnet_id" {
-  value = azurerm_virtual_netwrok.default.id
+  value = azurerm_virtual_network.default.id
 }
