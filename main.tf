@@ -22,7 +22,13 @@ module "vnet" {
   location   = module.rg.rg_location
   rgn        = module.rg.rg_name
   depends_on = [module.rg]
-  tags {
-    env = "test"
-  }
+ 
+}
+
+module "vnic" {
+  source     = "git::https://github.com/AndrewDvizhok/terraform-learning.git?ref=vnic"
+  name       = "my-tf-vnic"
+  rgn        = module.rg.rg_name
+  subnet_id = module.vnet["first"].vnet_id
+  depends_on = [module.rg]
 }
