@@ -8,27 +8,18 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = true
+    }
+  }
 }
 
-module "rg" {
-  source = "./modules/rg"
+resource "azurerm_resource_group" "default" {
+  name     = "tf-rg-spaincentral"
+  location = "spaincentral"
+  tags = {
+    env = "test"
+  }
 }
 
-module "vnet" {
-  for_each   = toset(["first", "second", "third"])
-  source     = "git::https://github.com/AndrewDvizhok/terraform-learning.git?ref=vnet"
-  vnet_name  = "my-tf-vnet-${each.key}"
-  location   = module.rg.rg_location
-  rgn        = module.rg.rg_name
-  depends_on = [module.rg]
- 
-}
-
-module "vnic" {
-  source     = "git::https://github.com/AndrewDvizhok/terraform-learning.git?ref=vnic"
-  name       = "my-tf-vnic"
-  rgn        = module.rg.rg_name
-  subnet_id = module.vnet["first"].vnet_id
-  depends_on = [module.rg]
-}
