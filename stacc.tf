@@ -16,3 +16,7 @@ resource "azurerm_storage_container" "tf" {
   storage_account_name  = azurerm_storage_account.tf.name
   container_access_type = "private"
 }
+
+output "container_name" {
+  value = azurerm_storage_container.tf.name
+}
