@@ -1,3 +1,7 @@
+variable "rgn" {
+default = "tf-rg-spaincentral"
+}
+
 terraform {
   required_providers {
     azurerm = {
@@ -5,7 +9,14 @@ terraform {
       version = "~> 4.65"
     }
   }
+  backend "azurerm" {
+    resource_group_name  = "tf-rg-spaincentral"
+    storage_account_name = "andrewdvizhoktflearnsc"
+    container_name       = "state"
+    key                  = "test.tfstate"
+  }
 }
+
 
 provider "azurerm" {
   features {
@@ -16,7 +27,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "default" {
-  name     = "tf-rg-spaincentral"
+  name     = var.rgn
   location = "spaincentral"
   tags = {
     env = "test"
@@ -28,7 +39,7 @@ resource "azurerm_resource_group" "default" {
 
 resource "azurerm_storage_account" "tf" {
   name                     = "andrewdvizhoktflearnsc"
-  resource_group_name      = azurerm_resource_group.default.name
+  resource_group_name      = var.rgn
   location                 = azurerm_resource_group.default.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
