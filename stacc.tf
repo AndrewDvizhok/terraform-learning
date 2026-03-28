@@ -1,4 +1,7 @@
 variable "rgn" {}
+variable "location" {
+  default = "spaincentral"
+}
 variable "name" {
   default = "andrewdvizhoktflearnsc"
 }
