@@ -23,3 +23,7 @@ resource "azurerm_resource_group" "default" {
   }
 }
 
+module "stor_acc" {
+  source = "git::https://github.com/AndrewDvizhok/terraform-learning.git?ref=stor_acc"
+  rgn    = azurerm_resource_group.default.name
+}
