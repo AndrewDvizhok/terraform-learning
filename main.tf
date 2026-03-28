@@ -21,9 +21,28 @@ resource "azurerm_resource_group" "default" {
   tags = {
     env = "test"
   }
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
-module "stor_acc" {
-  source = "git::https://github.com/AndrewDvizhok/terraform-learning.git?ref=stor_acc"
-  rgn    = azurerm_resource_group.default.name
+resource "azurerm_storage_account" "tf" {
+  name                     = "andrewdvizhoktflearnsc"
+  resource_group_name      = azurerm_resource_group.default.name
+  location                 = azurerm_resource_group.default.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  lifecycle {
+    prevent_destroy = true
+  }
+
+}
+
+resource "azurerm_storage_container" "tf" {
+  name                  = "state"
+  storage_account_id    = azurerm_storage_account.tf.id
+  container_access_type = "private"
+  lifecycle {
+    prevent_destroy = true
+  }
 }
