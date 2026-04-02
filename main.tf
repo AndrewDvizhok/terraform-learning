@@ -46,7 +46,6 @@ resource "azurerm_storage_account" "tf" {
   lifecycle {
     prevent_destroy = true
   }
-
 }
 
 resource "azurerm_storage_container" "tf" {
@@ -58,10 +57,12 @@ resource "azurerm_storage_container" "tf" {
   }
 }
 
-data "azurerm_resource_group" "free"{
-  name = "free"
+resource "azurerm_storage_share" "jenkins_share" {
+  name = "jenkins"
+  storage_account_id = azurerm_storage_account.tf.id
+  quota = 5
 }
 
-output "free_location"{
-  value = data.azurerm_resource_group.free.location
+data "azurerm_resource_group" "free"{
+  name = "free"
 }
