@@ -63,6 +63,12 @@ resource "azurerm_storage_share" "jenkins_share" {
   quota = 5
 }
 
+resource "azurerm_container_app_environment" "env" {
+  name = "jenkins-env"
+  resource_group_name = var.rgn
+  location = azurerm_resource_group.default.location
+}
+
 data "azurerm_resource_group" "free"{
   name = "free"
 }
