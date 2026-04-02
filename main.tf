@@ -1,12 +1,9 @@
-variable "rgn" {
-default = "tf-rg-spaincentral"
-}
-
 terraform {
+  required_version = "~>1.14"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.65"
+      version = "~> 4.66"
     }
   }
   backend "azurerm" {
@@ -17,13 +14,16 @@ terraform {
   }
 }
 
-
 provider "azurerm" {
   features {
     resource_group {
       prevent_deletion_if_contains_resources = true
     }
   }
+}
+
+variable "rgn" {
+  default = "tf-rg-spaincentral"
 }
 
 resource "azurerm_resource_group" "default" {
@@ -56,4 +56,12 @@ resource "azurerm_storage_container" "tf" {
   lifecycle {
     prevent_destroy = true
   }
+}
+
+data "azurerm_resource_group" "free"{
+  name = "free"
+}
+
+output "free_location"{
+  value = data.azurerm_resource_group.free.location
 }
